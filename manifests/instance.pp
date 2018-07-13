@@ -20,6 +20,10 @@
 #   The package name of haproxy. Defaults to undef, and no package is installed.
 #   NOTE: Class['haproxy'] has a different default.
 #
+# [*package_install_options*]
+#   The package install options of haproxy.
+#   Defaults to []
+#
 # [*service_ensure*]
 #   Chooses whether the haproxy service should be running & enabled at boot, or
 #   stopped and disabled at boot. Defaults to 'running'
@@ -142,6 +146,7 @@
 define haproxy::instance (
   Optional[String] $package_name                               = undef,
   String[1] $package_ensure                                    = 'present',
+  Array $package_install_options                               = [],
   Variant[Enum['running', 'stopped'], Boolean] $service_ensure = 'running',
   Boolean $service_manage                                      = true,
   Optional[Hash] $global_options                               = undef,
@@ -200,8 +205,9 @@ define haproxy::instance (
     config_validate_cmd => $config_validate_cmd,
   }
   haproxy::install { $title:
-    package_name   => $package_name,
-    package_ensure => $package_ensure,
+    package_name            => $package_name,
+    package_ensure          => $package_ensure,
+    package_install_options => $package_install_options,
   }
   haproxy::service { $title:
     instance_name     => $instance_name,

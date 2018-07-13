@@ -19,6 +19,10 @@
 #   The package name of haproxy. Defaults to 'haproxy'
 #   NOTE: haproxy::instance has a different default.
 #
+# [*package_install_options*]
+#   The package install options of haproxy.
+#   Defaults to []
+#
 # [*service_ensure*]
 #   Chooses whether the haproxy service should be running & enabled at boot, or
 #   stopped and disabled at boot. Defaults to 'running'
@@ -111,6 +115,7 @@
 class haproxy (
   String[1] $package_ensure                                    = 'present',
   String $package_name                                         = $haproxy::params::package_name,
+  Array $package_install_options                               = [],
   Variant[Enum['running', 'stopped'], Boolean] $service_ensure = 'running',
   Boolean $service_manage                                      = true,
   String $service_options                                      = $haproxy::params::service_options,
@@ -159,20 +164,21 @@ class haproxy (
   }
 
   haproxy::instance{ $title:
-    package_ensure      => $_package_ensure,
-    package_name        => $package_name,
-    service_ensure      => $_service_ensure,
-    service_manage      => $_service_manage,
-    global_options      => $global_options,
-    defaults_options    => $defaults_options,
-    restart_command     => $restart_command,
-    custom_fragment     => $custom_fragment,
-    config_dir          => $config_dir,
-    config_file         => $config_file,
-    merge_options       => $merge_options,
-    service_options     => $service_options,
-    sysconfig_options   => $sysconfig_options,
-    config_validate_cmd => $config_validate_cmd,
+    package_ensure          => $_package_ensure,
+    package_name            => $package_name,
+    package_install_options => $package_install_options,
+    service_ensure          => $_service_ensure,
+    service_manage          => $_service_manage,
+    global_options          => $global_options,
+    defaults_options        => $defaults_options,
+    restart_command         => $restart_command,
+    custom_fragment         => $custom_fragment,
+    config_dir              => $config_dir,
+    config_file             => $config_file,
+    merge_options           => $merge_options,
+    service_options         => $service_options,
+    sysconfig_options       => $sysconfig_options,
+    config_validate_cmd     => $config_validate_cmd,
   }
 
 }
