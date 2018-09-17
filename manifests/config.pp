@@ -50,7 +50,7 @@ define haproxy::config (
     concat { $_config_file:
       owner => '0',
       group => '0',
-      mode  => '0640',
+      mode  => '0644',
     }
 
     # validate_cmd introduced in Puppet 3.5
